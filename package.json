@@ -1,0 +1,35 @@
+{
+  "name": "sync-tugowar",
+  "version": "1.0.0",
+  "description": "syncingdata HW I",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --use_strict ./src/server.js ",
+    "pretest": "eslint ./src --fix",
+    "test": "echo 'complete'",
+    "build": "babel ./client --out-file ./hosted.bundle.js",
+    "watch": "babel --watch ./client --out-file ./hosted/bundle.js",
+    "nodemon": "nodemon --watch ./src ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LegendaryBaddie/SYNC2-TugOWar.git"
+  },
+  "author": "Austin White",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LegendaryBaddie/SYNC2-TugOWar.git"
+  },
+  "homepage": "https://github.com/LegendaryBaddie/SYNC2-TugOWar.git",
+  "dependencies": {
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.7.2",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "nodemon": "^1.12.1"
+  }
+}

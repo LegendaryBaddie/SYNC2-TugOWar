@@ -32,14 +32,14 @@ let pos = 400
 const onJoined = (sock) => {
   const socket = sock;
   socket.join('room');
-  users[socket] = Math.ceil(Math.random() * 2)-1
+  users[socket.id] = Math.ceil(Math.random() * 2)-1
   // set background color for each player
-  if(users[socket] == 0)
+  if(users[socket.id] == 0)
   {
     let data = {
       x:0,
       y:0,
-      width:400,
+      width:350,
       height:300,
       color:"#FF0000",
       pos: pos
@@ -56,9 +56,9 @@ const onJoined = (sock) => {
     }
     socket.emit('sideChosen', data);
   }
-  console.log(users[socket]);
   socket.on('move', (data) => {
-   if(users[socket] == 0){
+    console.log(socket.id);
+   if(users[socket.id] == 0){
      //move left
       pos -=1;
       let data = {
@@ -77,7 +77,6 @@ const onJoined = (sock) => {
 };
 
 io.sockets.on('connection', (sock) => {
-
   onJoined(sock);
 });
 

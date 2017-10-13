@@ -1,7 +1,7 @@
 {
   "name": "sync-tugowar",
   "version": "1.0.0",
-  "description": "syncingdata HW I",
+  "description": "tugowar game",
   "main": "server.js",
   "scripts": {
     "start": "node --use_strict ./src/server.js ",

@@ -44,23 +44,35 @@ var setup = function setup() {
 var resetKey = function resetKey() {
     keyBool = true;
 };
+
 var keyCheck = function keyCheck(e) {
     e = e || window.event;
     if (keyBool) {
         if (!lastKey) {
-            if (e.key == "ArrowLeft" || "ArrowRight") {
+            if (e.keyCode === 37 || e.keyCode === 39) {
                 socket.emit('move');
                 keyBool = false;
                 lastKey = e.key;
             }
         } else {
-            if (e.key != lastKey && (e.key == "ArrowLeft" || "ArrowRight")) {
+            if (lastKey != e.keyCode && (e.keyCode === 37 || e.keyCode === 39)) {
                 socket.emit('move');
                 keyBool = false;
-                lastKey = e.key;
+                lastKey = e.keyCode;
             }
         }
     }
+};
+var win = function win() {
+    ctx.fillStyle = "green";
+    ctx.font = "bold 56px Arial";
+    ctx.fillText("WIN!", canvas.width / 2 - 50, canvas.height / 2);
+};
+
+var lose = function lose() {
+    ctx.fillStyle = "green";
+    ctx.font = "bold 56px Arial";
+    ctx.fillText("LOSE!", canvas.width / 2 - 50, canvas.height / 2);
 };
 
 var init = function init() {
@@ -70,7 +82,14 @@ var init = function init() {
         handleMessage(data);
     });
     socket.on('update', function (data) {
-        draw(data.pos);
+        draw(data.apos);
+        console.log(data.apos);
+    });
+    socket.on('win', function () {
+        win();
+    });
+    socket.on('lose', function () {
+        lose();
     });
 };
 document.onkeydown = keyCheck;

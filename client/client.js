@@ -43,26 +43,37 @@
         const resetKey = () => {
             keyBool = true;
         }
+
         const keyCheck = (e) => {
             e = e || window.event;
             if(keyBool){
                 if(!lastKey){
-                    if(e.key == "ArrowLeft" || "ArrowRight"){
+                    if(e.keyCode === 37 || e.keyCode === 39){
                         socket.emit('move');
                         keyBool = false;
-                        lastKey=e.key;
+                        lastKey=e.key; 
                     }    
-                } else{
-                    if((e.key!=lastKey)&& (e.key== "ArrowLeft" || "ArrowRight")){
+                }else{
+                    if((lastKey != e.keyCode) && (e.keyCode === 37 || e.keyCode === 39)){
                         socket.emit('move');
                         keyBool = false;
-                        lastKey=e.key;
-                        
+                        lastKey = e.keyCode;
                     }
                 } 
             }
         }
-          
+        const win = () =>{
+            ctx.fillStyle = "green";
+            ctx.font = "bold 56px Arial";
+            ctx.fillText("WIN!",canvas.width/2 -50, canvas.height/2);
+        }
+
+        const lose = () =>{
+            ctx.fillStyle = "green";
+            ctx.font = "bold 56px Arial";
+            ctx.fillText("LOSE!",canvas.width/2 -50, canvas.height/2);
+        }
+
         const init = () => {
             socket = io.connect();
             socket.on('sideChosen', (data) => {
@@ -70,9 +81,15 @@
                 handleMessage(data);
             });
             socket.on('update', (data) => {
-                draw(data.pos);
+                draw(data.apos);
+                console.log(data.apos);
             });
-           
+            socket.on('win', () =>{
+                win();
+            });
+            socket.on('lose', () =>{
+                lose();
+            });
         };
         document.onkeydown = keyCheck;
         document.onkeyup = resetKey;

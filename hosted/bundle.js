@@ -6,6 +6,7 @@ var canvas = void 0;
 var ctx = void 0;
 var lastKey = void 0;
 var keyBool = true;
+var gameOver = false;
 
 var direction = {
     x: 0,
@@ -27,12 +28,26 @@ var handleMessage = function handleMessage(data) {
 var draw = function draw(pos) {
     //reset
     ctx.clearRect(0, 0, 800, 300);
+
+    //draw background
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, 800, 300);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(350, 0, 100, 300);
+
     //draw side
     ctx.fillStyle = direction.color;
     ctx.fillRect(direction.x, direction.y, direction.width, direction.height);
     ctx.fillStyle = "#000000";
+    ctx.font = "50pt Erica One";
+    ctx.fillText("YOU", direction.x + 100, direction.y + 150);
+
     //draw position
-    ctx.fillRect(pos, 0, 100, 300);
+    ctx.fillRect(pos, 25, 20, 250);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.strokeRect(pos, 25, 20, 250);
+    ctx.fillRect(pos + 9.5, 50, 1, 200);
 };
 
 var setup = function setup() {
@@ -44,21 +59,22 @@ var setup = function setup() {
 var resetKey = function resetKey() {
     keyBool = true;
 };
-
 var keyCheck = function keyCheck(e) {
-    e = e || window.event;
-    if (keyBool) {
-        if (!lastKey) {
-            if (e.keyCode === 37 || e.keyCode === 39) {
-                socket.emit('move');
-                keyBool = false;
-                lastKey = e.key;
-            }
-        } else {
-            if (lastKey != e.keyCode && (e.keyCode === 37 || e.keyCode === 39)) {
-                socket.emit('move');
-                keyBool = false;
-                lastKey = e.keyCode;
+    if (!gameOver) {
+        e = e || window.event;
+        if (keyBool) {
+            if (!lastKey) {
+                if (e.keyCode === 37 || e.keyCode === 39) {
+                    socket.emit('move');
+                    keyBool = false;
+                    lastKey = e.key;
+                }
+            } else {
+                if (lastKey != e.keyCode && (e.keyCode === 37 || e.keyCode === 39)) {
+                    socket.emit('move');
+                    keyBool = false;
+                    lastKey = e.keyCode;
+                }
             }
         }
     }
@@ -87,9 +103,11 @@ var init = function init() {
     });
     socket.on('win', function () {
         win();
+        gameOver = true;
     });
     socket.on('lose', function () {
         lose();
+        gameOver = true;
     });
 };
 document.onkeydown = keyCheck;

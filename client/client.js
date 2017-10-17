@@ -5,6 +5,7 @@
         let ctx;
         let lastKey;
         let keyBool = true;
+        let gameOver = false;
 
         let direction = {
             x:0,
@@ -26,12 +27,26 @@
         const draw = (pos) => {
             //reset
             ctx.clearRect(0,0,800,300);
+            
+            //draw background
+            ctx.fillStyle="#000000";
+            ctx.fillRect(0,0,800,300);
+            ctx.fillStyle="#FFFFFF";
+            ctx.fillRect(350,0,100,300);
+            
             //draw side
             ctx.fillStyle = direction.color;
             ctx.fillRect(direction.x,direction.y,direction.width,direction.height);
             ctx.fillStyle = "#000000";
+            ctx.font = "50pt Erica One"
+            ctx.fillText("YOU",direction.x+100, direction.y +150);
+
             //draw position
-            ctx.fillRect(pos, 0, 100, 300);
+            ctx.fillRect(pos, 25, 20, 250);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.strokeRect(pos, 25, 20, 250);
+            ctx.fillRect(pos+9.5, 50, 1, 200);
         };
 
         const setup = () => {
@@ -43,23 +58,24 @@
         const resetKey = () => {
             keyBool = true;
         }
-
         const keyCheck = (e) => {
-            e = e || window.event;
-            if(keyBool){
-                if(!lastKey){
-                    if(e.keyCode === 37 || e.keyCode === 39){
-                        socket.emit('move');
-                        keyBool = false;
-                        lastKey=e.key; 
-                    }    
-                }else{
-                    if((lastKey != e.keyCode) && (e.keyCode === 37 || e.keyCode === 39)){
-                        socket.emit('move');
-                        keyBool = false;
-                        lastKey = e.keyCode;
-                    }
-                } 
+            if(!gameOver){
+                e = e || window.event;
+                if(keyBool){
+                    if(!lastKey){
+                        if(e.keyCode === 37 || e.keyCode === 39){
+                            socket.emit('move');
+                            keyBool = false;
+                            lastKey=e.key; 
+                        }    
+                    }else{
+                        if((lastKey != e.keyCode) && (e.keyCode === 37 || e.keyCode === 39)){
+                            socket.emit('move');
+                            keyBool = false;
+                            lastKey = e.keyCode;
+                        }
+                    } 
+                }
             }
         }
         const win = () =>{
@@ -73,7 +89,7 @@
             ctx.font = "bold 56px Arial";
             ctx.fillText("LOSE!",canvas.width/2 -50, canvas.height/2);
         }
-
+    
         const init = () => {
             socket = io.connect();
             socket.on('sideChosen', (data) => {
@@ -86,9 +102,11 @@
             });
             socket.on('win', () =>{
                 win();
+                gameOver=true;
             });
             socket.on('lose', () =>{
                 lose();
+                gameOver=true;
             });
         };
         document.onkeydown = keyCheck;

@@ -123,8 +123,8 @@ const onJoined = (sock) => {
       if (socket.id === rooms[room].player1) {
       // move left
         rooms[room].pos -= 3;
-        if (pos === 0) {
-          io.sockets.in(`${rooms[room].name}`).emit('lose');
+        if (pos <= 0) {
+          socket.to(`${rooms[room].name}`).emit('lose');
           socket.emit('win');
         } else {
           const data = {
@@ -135,8 +135,8 @@ const onJoined = (sock) => {
       } else {
         // move right
         rooms[room].pos += 3;
-        if (pos === 775) {
-          io.sockets.in(`${rooms[room].name}`).emit('lose');
+        if (pos >= 775) {
+          socket.to(`${rooms[room].name}`).emit('lose');
           socket.emit('win');
         } else {
           const data = {

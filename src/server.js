@@ -62,7 +62,7 @@ const onJoined = (sock) => {
             name: roomName,
             player1: socket.id,
             player2: null,
-            pos: 350,
+            pos: 390,
           });
           users[socket.id] = { room: roomName, player: 'player1' };
           break;
@@ -86,7 +86,7 @@ const onJoined = (sock) => {
         name: 1,
         player1: null,
         player2: null,
-        pos: 350,
+        pos: 390,
       };
     // if there is no open rooms make your own
     }
@@ -102,7 +102,7 @@ const onJoined = (sock) => {
       color: '#FF0000',
       pos: 390,
     };
-    socket.emit('sideChosen', data);
+    socket.emit('sideChosenWait', data);
   } else {
     const data = {
       x: 450,
@@ -112,8 +112,10 @@ const onJoined = (sock) => {
       color: '#0000FF',
       pos: 390,
     };
-    socket.emit('sideChosen', data);
+    socket.emit('sideChosenWait', data);
+    io.in(`${rooms[users[socket.id].room].name}`).emit('start');
   }
+
   socket.on('move', () => {
     const room = users[socket.id].room;
     const pos = rooms[room].pos;

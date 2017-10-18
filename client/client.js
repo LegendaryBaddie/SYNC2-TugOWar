@@ -121,15 +121,21 @@
             }
         };
         const win = () =>{
-            ctx.fillStyle = "green";
-            ctx.font = "bold 56px Arial";
-            ctx.fillText("WIN!",canvas.width/2 -50, canvas.height/2);
+            ctx.fillStyle = "#794c13";
+            ctx.font = "75pt Erica One";
+            ctx.fillText("WIN!",300,200);
+            ctx.strokeStyle = "#56b000";
+            ctx.lineWidth = 3;
+            ctx.strokeText("WIN!",300,200);
         };
 
         const lose = () =>{
-            ctx.fillStyle = "green";
-            ctx.font = "bold 56px Arial";
-            ctx.fillText("LOSE!",canvas.width/2 -50, canvas.height/2);
+            ctx.fillStyle = "#794c13";
+            ctx.font = "75pt Erica One";
+            ctx.fillText("LOSE!",300,200);
+            ctx.strokeStyle = "#56b000";
+            ctx.lineWidth = 3;
+            ctx.strokeText("LOSE!",300,200);
         };
     
         const init = () => {

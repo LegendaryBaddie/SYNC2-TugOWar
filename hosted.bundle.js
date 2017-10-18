@@ -123,14 +123,16 @@ var keyCheck = function keyCheck(e) {
 };
 var win = function win() {
     ctx.fillStyle = "green";
-    ctx.font = "bold 56px Arial";
+    ctx.font = "56pt Erica One";
     ctx.fillText("WIN!", canvas.width / 2 - 50, canvas.height / 2);
+    ctx.strokeText("WIN!", canvas.width / 2 - 50, canvas.height / 2);
 };
 
 var lose = function lose() {
     ctx.fillStyle = "green";
-    ctx.font = "bold 56px Arial";
+    ctx.font = "56pt Erica One";
     ctx.fillText("LOSE!", canvas.width / 2 - 50, canvas.height / 2);
+    ctx.strokeText("LOSE!", canvas.width / 2 - 50, canvas.height / 2);
 };
 
 var init = function init() {
